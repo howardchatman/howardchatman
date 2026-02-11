@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Howard Chatman — Full-Stack Engineer & Systems Architect</title>
+<meta name="description" content="Howard Chatman — Full-Stack Engineer, Systems Architect, and Builder of Real Things. 15+ years in business. Shipping production software and scaling operations.">
+<meta name="author" content="Howard Leon Chatman III">
+<meta property="og:title" content="Howard Chatman — Full-Stack Engineer & Systems Architect">
+<meta property="og:description" content="15+ years building businesses. Now I architect and code the intelligent systems that run them.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://howardchatman.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ========== RESET & BASE ========== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0A0A0F;
+  --bg-card: #12121A;
+  --bg-card-hover: #1A1A25;
+  --border: #1E1E2A;
+  --text: #E8E8ED;
+  --text-muted: #8888A0;
+  --text-dim: #55556A;
+  --blue: #4F7CFF;
+  --blue-glow: rgba(79, 124, 255, 0.15);
+  --purple: #7B5CFF;
+  --green: #34D399;
+  --orange: #F59E0B;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --nav-height: 72px;
+  --max-width: 1200px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+/* ========== SCROLL ANIMATIONS ========== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-in-delay-1 { transition-delay: 0.1s; }
+.fade-in-delay-2 { transition-delay: 0.2s; }
+.fade-in-delay-3 { transition-delay: 0.3s; }
+
+/* ========== NAVIGATION ========== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.nav-logo {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.nav-logo span { color: var(--blue); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-cta {
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: var(--blue) !important;
+  padding: 8px 16px;
+  border: 1px solid rgba(79, 124, 255, 0.3);
+  border-radius: 8px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.nav-cta:hover {
+  background: var(--blue-glow);
+  border-color: var(--blue);
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  z-index: 1001;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.95);
+  backdrop-filter: blur(20px);
+  z-index: 999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+.mobile-menu.active { display: flex; }
+.mobile-menu a {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--text); }
+
+/* ========== HERO ========== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: var(--nav-height);
+}
+.hero-content { padding: 80px 0 40px; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  border-radius: 100px;
+  font-size: 0.875rem;
+  color: var(--green);
+  margin-bottom: 32px;
+}
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+}
+
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+.hero h1 .gradient {
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  max-width: 700px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.stat-number {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--blue);
+}
+.stat-label {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+.btn-primary:hover {
+  background: #6090FF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(79, 124, 255, 0.25);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn-outline:hover {
+  border-color: var(--text-muted);
+  background: var(--bg-card);
+  transform: translateY(-2px);
+}
+
+/* ========== SECTION SHARED ========== */
+section {
+  padding: 100px 0;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: 48px;
+}
+
+/* ========== SKILLS ========== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+.skill-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.skill-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-4px);
+}
+.skill-card-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-glow);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  color: var(--blue);
+}
+.skill-card h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.skill-tag {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  background: rgba(79, 124, 255, 0.08);
+  border: 1px solid rgba(79, 124, 255, 0.15);
+  border-radius: 6px;
+  color: var(--text-muted);
+}
+.license-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.license-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  padding: 8px 16px;
+  background: rgba(52, 211, 153, 0.06);
+  border: 1px solid rgba(52, 211, 153, 0.15);
+  border-radius: 100px;
+  color: var(--green);
+}
+.license-chip svg { flex-shrink: 0; }
+
+/* ========== PORTFOLIO CAROUSEL ========== */
+.portfolio-section {
+  padding: 100px 0;
+  overflow: hidden;
+}
+.carousel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.carousel-counter {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+.carousel-counter .current { color: var(--text); font-weight: 700; }
+.carousel-arrow {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.carousel-arrow:hover {
+  border-color: var(--blue);
+  background: var(--blue-glow);
+}
+.carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.carousel-arrow:disabled:hover {
+  border-color: var(--border);
+  background: var(--bg-card);
+}
+
+.carousel-progress {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto 40px;
+  padding: 0 24px;
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.carousel-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-track-wrapper {
+  overflow: hidden;
+  cursor: grab;
+  padding: 20px 0;
+}
+.carousel-track-wrapper:active { cursor: grabbing; }
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0 calc((100vw - 700px) / 2);
+  will-change: transform;
+}
+
+.portfolio-card {
+  flex: 0 0 700px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  opacity: 0.35;
+  transform: scale(0.93);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.portfolio-card.active {
+  opacity: 1;
+  transform: scale(1);
+  border-color: rgba(79, 124, 255, 0.3);
+}
+.portfolio-card-number {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-family: var(--font-mono);
+  font-size: 5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.03);
+  line-height: 1;
+  pointer-events: none;
+}
+.portfolio-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-live {
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  color: var(--green);
+}
+.badge-demo {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: var(--orange);
+}
+.portfolio-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.portfolio-card .subtitle {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.portfolio-card .divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 20px;
+}
+.portfolio-card .case-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+.portfolio-card .case-text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.portfolio-card .tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.portfolio-card .tech-tag {
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  padding: 4px 10px;
+  background: rgba(123, 92, 255, 0.08);
+  border: 1px solid rgba(123, 92, 255, 0.2);
+  border-radius: 6px;
+  color: var(--purple);
+}
+.portfolio-card .card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s;
+}
+.portfolio-card .card-cta:hover {
+  background: #6090FF;
+  transform: translateY(-1px);
+}
+
+/* ========== EXPERIENCE TIMELINE ========== */
+.timeline { position: relative; padding-left: 36px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  padding-bottom: 48px;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-dot {
+  position: absolute;
+  left: -36px;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  transition: border-color 0.3s, background 0.3s;
+  z-index: 1;
+}
+.timeline-dot.current {
+  border-color: var(--green);
+  background: var(--bg);
+}
+.timeline-dot.current::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.timeline-item:hover .timeline-dot {
+  border-color: var(--blue);
+}
+.timeline-item:hover .timeline-dot.current {
+  border-color: var(--blue);
+}
+.timeline-item:hover .timeline-dot.current::after {
+  background: var(--blue);
+}
+
+.timeline-header { margin-bottom: 8px; }
+.timeline-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+.timeline-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.timeline-company {
+  font-size: 0.9375rem;
+  color: var(--blue);
+  font-weight: 500;
+}
+.timeline-date {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--text-dim);
+}
+.timeline-location {
+  font-size: 0.8125rem;
+  color: var(--text-dim);
+}
+.timeline-bullets { list-style: none; }
+.timeline-bullets li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+.timeline-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 4px;
+  height: 4px;
+  background: var(--text-dim);
+  border-radius: 50%;
+}
+.timeline-expandable { display: none; }
+.timeline-expandable.expanded { display: block; }
+.timeline-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 4px 0;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--blue);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.timeline-toggle:hover { color: #6090FF; }
+
+.current-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 4px;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========== EDUCATION ========== */
+.education-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.education-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-glow);
+  border-radius: 14px;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.education-card h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.education-card p {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+/* ========== TECH STACK ========== */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.tech-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.tech-card:hover {
+  border-color: var(--purple);
+  transform: translateY(-4px);
+}
+.tech-card h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--purple);
+}
+.tech-card .skill-tags .skill-tag {
+  background: rgba(123, 92, 255, 0.08);
+  border-color: rgba(123, 92, 255, 0.15);
+}
+
+/* ========== CONTACT ========== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+.contact-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.contact-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-4px);
+}
+.contact-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-glow);
+  border-radius: 12px;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.contact-card .contact-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+.contact-card .contact-value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ========== FOOTER ========== */
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 0.8125rem;
+  color: var(--text-dim);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  .tech-grid { grid-template-columns: repeat(2, 1fr); }
+  .contact-grid { grid-template-columns: repeat(2, 1fr); }
+  .carousel-track { padding: 0 calc((100vw - 560px) / 2); }
+  .portfolio-card { flex: 0 0 560px; }
+}
+
+@media (max-width: 768px) {
+  .nav { padding: 0 16px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+
+  .hero-content { padding: 40px 0; }
+  .hero h1 { font-size: 2rem; }
+  .hero-subtitle { font-size: 1rem; }
+  .hero-stats { flex-direction: column; }
+  .hero-buttons { flex-direction: column; }
+  .hero-buttons .btn { justify-content: center; text-align: center; }
+
+  .stat { width: 100%; }
+
+  section { padding: 60px 0; }
+  .section-title { font-size: 1.5rem; margin-bottom: 32px; }
+
+  .skills-grid { grid-template-columns: 1fr; }
+  .skill-card { padding: 20px; }
+
+  .carousel-header { flex-direction: column; align-items: flex-start; }
+  .carousel-track { padding: 0 calc((100vw - 320px) / 2); gap: 16px; }
+  .portfolio-card { flex: 0 0 320px; padding: 24px; }
+  .portfolio-card h3 { font-size: 1.25rem; }
+  .portfolio-card-number { font-size: 3rem; }
+  .portfolio-card .case-text { font-size: 0.8125rem; }
+
+  .timeline { padding-left: 28px; }
+  .timeline-dot { left: -28px; width: 14px; height: 14px; }
+  .timeline-title { font-size: 1rem; }
+  .timeline-meta { flex-direction: column; align-items: flex-start; gap: 4px; }
+
+  .education-card { flex-direction: column; text-align: center; }
+
+  .tech-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-card { width: 100%; }
+
+  .license-chips { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .hero h1 { font-size: 1.75rem; }
+  .hero-badge { font-size: 0.75rem; padding: 6px 12px; }
+
+  .carousel-track { padding: 0 calc((100vw - 280px) / 2); }
+  .portfolio-card { flex: 0 0 280px; padding: 20px; }
+  .portfolio-card h3 { font-size: 1.125rem; }
+  .portfolio-card .case-text { font-size: 0.75rem; }
+
+  .stat-number { font-size: 1rem; }
+  .stat { padding: 10px 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ==================== NAVIGATION ==================== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">Howard <span>Chatman</span></div>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#techstack">Tech Stack</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://chatmaninc.com" target="_blank" rel="noopener noreferrer" class="nav-cta">chatmaninc.com &rarr;</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#skills" class="mobile-link">Skills</a>
+  <a href="#portfolio" class="mobile-link">Portfolio</a>
+  <a href="#experience" class="mobile-link">Experience</a>
+  <a href="#techstack" class="mobile-link">Tech Stack</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+  <a href="https://chatmaninc.com" target="_blank" rel="noopener noreferrer">chatmaninc.com &rarr;</a>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge fade-in">
+        <span class="pulse-dot"></span>
+        Available for leadership roles &amp; contracts
+      </div>
+
+      <h1 class="fade-in fade-in-delay-1">
+        Full-Stack Engineer.<br>
+        Systems Architect.<br>
+        <span class="gradient">Builder of Real Things.</span>
+      </h1>
+
+      <p class="hero-subtitle fade-in fade-in-delay-2">
+        15+ years building businesses in fire protection &amp; security. Now I architect and code the intelligent systems that run them. I don't just talk about technology &mdash; I ship production software, scale operations, and solve real problems.
+      </p>
+
+      <div class="hero-stats fade-in fade-in-delay-2">
+        <div class="stat">
+          <span class="stat-number">15+</span>
+          <span class="stat-label">Years in Business</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">$1M+</span>
+          <span class="stat-label">Company Revenue Built</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">6+</span>
+          <span class="stat-label">Live Production Systems</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">3</span>
+          <span class="stat-label">Patents Filed</span>
+        </div>
+      </div>
+
+      <div class="hero-buttons fade-in fade-in-delay-3">
+        <a href="#portfolio" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          View My Work
+        </a>
+        <a href="/Howard_Chatman_Resume.pdf" download="Howard_Chatman_Resume.pdf" class="btn btn-outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume (PDF)
+        </a>
+        <a href="https://chatmaninc.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Visit chatmaninc.com
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SKILLS ==================== -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label fade-in">Core Competencies</div>
+    <h2 class="section-title fade-in">What I Bring to the Table</h2>
+
+    <div class="skills-grid">
+      <!-- Software Engineering -->
+      <div class="skill-card fade-in">
+        <div class="skill-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Software Engineering</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Full-Stack Development</span>
+          <span class="skill-tag">Front-End (React/Next.js)</span>
+          <span class="skill-tag">Back-End (Node.js/PostgreSQL)</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">SaaS Architecture</span>
+          <span class="skill-tag">CI/CD</span>
+        </div>
+      </div>
+
+      <!-- Intelligent Systems -->
+      <div class="skill-card fade-in fade-in-delay-1">
+        <div class="skill-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </div>
+        <h3>Intelligent Systems</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Voice Engineering</span>
+          <span class="skill-tag">Workflow Automation</span>
+          <span class="skill-tag">Decision Logic</span>
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">LLM Integration</span>
+        </div>
+      </div>
+
+      <!-- Fire & Life Safety -->
+      <div class="skill-card fade-in fade-in-delay-2">
+        <div class="skill-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1 3 2.5 3.5 3.5 4.5A5 5 0 0 1 17 10c0 3.5-2 5-5 7.5C9 15 7 13.5 7 10a5 5 0 0 1 1.5-3.5C9.5 5.5 11 5 12 2z"/></svg>
+        </div>
+        <h3>Fire &amp; Life Safety</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Fire Alarms</span>
+          <span class="skill-tag">Security Systems</span>
+          <span class="skill-tag">CCTV</span>
+          <span class="skill-tag">Access Control</span>
+          <span class="skill-tag">Fire Sprinklers</span>
+          <span class="skill-tag">Code Compliance</span>
+        </div>
+      </div>
+
+      <!-- Business & Operations -->
+      <div class="skill-card fade-in fade-in-delay-3">
+        <div class="skill-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+        </div>
+        <h3>Business &amp; Operations</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">P&L Management</span>
+          <span class="skill-tag">Revenue Growth</span>
+          <span class="skill-tag">Project Management</span>
+          <span class="skill-tag">Remote Teams</span>
+          <span class="skill-tag">Enterprise Sales</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="license-chips fade-in">
+      <div class="license-chip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Texas Security License (ACR/PSB)
+      </div>
+      <div class="license-chip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        NICET Certified
+      </div>
+      <div class="license-chip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Texas Fire Alarm License
+      </div>
+      <div class="license-chip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Fire Sprinkler License
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PORTFOLIO CAROUSEL ==================== -->
+<section class="portfolio-section" id="portfolio">
+  <div class="container">
+    <div class="carousel-header">
+      <div>
+        <div class="section-label fade-in">Portfolio</div>
+        <h2 class="section-title fade-in" style="margin-bottom: 0;">Systems I've Built &amp; Shipped</h2>
+      </div>
+      <div class="carousel-controls fade-in">
+        <span class="carousel-counter"><span class="current" id="carouselCurrent">01</span> / <span id="carouselTotal">06</span></span>
+        <button class="carousel-arrow" id="prevBtn" aria-label="Previous project">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="carousel-arrow" id="nextBtn" aria-label="Next project">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel-progress"><div class="carousel-progress-fill" id="progressFill"></div></div>
+
+  <div class="carousel-track-wrapper" id="carouselWrapper">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- Card 01 — AIVA Connect -->
+      <div class="portfolio-card">
+        <span class="portfolio-card-number">01</span>
+        <div class="portfolio-badge badge-live">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+          Live in Production
+        </div>
+        <h3>AIVA Connect</h3>
+        <p class="subtitle">Voice-Powered Decision Platform</p>
+        <div class="divider"></div>
+        <div class="case-label">The Problem</div>
+        <p class="case-text">Businesses lose thousands from missed calls, spam, and unqualified leads reaching decision-makers. Existing answering services are expensive, robotic, and have no decision authority.</p>
+        <div class="case-label">What I Built</div>
+        <p class="case-text">A full SaaS platform from scratch &mdash; voice agents with autonomous decision authority that qualify leads, block spam, and route only high-value calls. Includes user auth, dashboards, call analytics, billing, and real-time monitoring. 3 provisional patents filed.</p>
+        <div class="case-label">How I Built It</div>
+        <div class="tech-tags">
+          <span class="tech-tag">React / Next.js</span>
+          <span class="tech-tag">Supabase</span>
+          <span class="tech-tag">PostgreSQL</span>
+          <span class="tech-tag">Retell.ai</span>
+          <span class="tech-tag">Vercel</span>
+          <span class="tech-tag">Resend</span>
+        </div>
+        <a href="https://connectaiva.com" target="_blank" rel="noopener noreferrer" class="card-cta">
+          Visit Live Site
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 02 — Chatman Inc. -->
+      <div class="portfolio-card">
+        <span class="portfolio-card-number">02</span>
+        <div class="portfolio-badge badge-live">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+          Live in Production
+        </div>
+        <h3>Chatman Inc.</h3>
+        <p class="subtitle">Business Architecture &amp; Software Firm</p>
+        <div class="divider"></div>
+        <div class="case-label">The Problem</div>
+        <p class="case-text">Needed a company site that functions as a sales engine &mdash; industry demos, patent-pending tech showcase, vertical-specific experiences, and a systems audit funnel, all in one place.</p>
+        <div class="case-label">What I Built</div>
+        <p class="case-text">Full marketing platform with 6 industry-specific demo subdomains, dynamic contact forms with goal routing, team profiles, proof-of-execution portfolio, and process walkthrough. Every linked demo is functional and live.</p>
+        <div class="case-label">How I Built It</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Next.js</span>
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">Vercel</span>
+          <span class="tech-tag">Custom CSS</span>
+          <span class="tech-tag">Responsive</span>
+        </div>
+        <a href="https://www.chatmaninc.com" target="_blank" rel="noopener noreferrer" class="card-cta">
+          Visit Live Site
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 03 — Real Estate Platform -->
+      <div class="portfolio-card">
+        <span class="portfolio-card-number">03</span>
+        <div class="portfolio-badge badge-demo">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+          Industry Demo
+        </div>
+        <h3>Real Estate Platform</h3>
+        <p class="subtitle">End-to-End Property &amp; Lead Operations</p>
+        <div class="divider"></div>
+        <div class="case-label">The Problem</div>
+        <p class="case-text">Real estate agents miss buyer inquiries at night, can't qualify leads before investing time, and lose deals to slow follow-up. Their tech stack is fragmented across 5+ tools.</p>
+        <div class="case-label">What I Built</div>
+        <p class="case-text">A complete property platform with voice-powered lead qualification, automated showing scheduling, intelligent routing by buyer timeline and budget, and live data validation. Voice agent handles after-hours inquiries and books qualified leads directly.</p>
+        <div class="case-label">How I Built It</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Next.js</span>
+          <span class="tech-tag">Voice Agent</span>
+          <span class="tech-tag">Lead Routing</span>
+          <span class="tech-tag">Scheduling API</span>
+          <span class="tech-tag">Supabase</span>
+        </div>
+        <a href="https://realestatedemo.chatmaninc.com" target="_blank" rel="noopener noreferrer" class="card-cta">
+          View Demo
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 04 — Insurance Operations -->
+      <div class="portfolio-card">
+        <span class="portfolio-card-number">04</span>
+        <div class="portfolio-badge badge-demo">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+          Industry Demo
+        </div>
+        <h3>Insurance Operations</h3>
+        <p class="subtitle">Intelligent Claims &amp; Policy Management</p>
+        <div class="divider"></div>
+        <div class="case-label">The Problem</div>
+        <p class="case-text">Insurance agencies drown in inbound calls &mdash; claims, policy questions, new quotes &mdash; all in one queue. Agents spend 60% of time on calls that could be routed automatically. Hold times cost renewals.</p>
+        <div class="case-label">What I Built</div>
+        <p class="case-text">Intelligent intake and routing that triages calls by type, captures verified client data through conversational validation, routes to the right department, and handles common policy questions autonomously. Compliance-aware throughout.</p>
+        <div class="case-label">How I Built It</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Voice Agent</span>
+          <span class="tech-tag">Decision Logic</span>
+          <span class="tech-tag">Claims Routing</span>
+          <span class="tech-tag">Compliance Layer</span>
+          <span class="tech-tag">CRM</span>
+        </div>
+        <a href="https://insurancedemo.chatmaninc.com" target="_blank" rel="noopener noreferrer" class="card-cta">
+          View Demo
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 05 — Security Operations Platform -->
+      <div class="portfolio-card">
+        <span class="portfolio-card-number">05</span>
+        <div class="portfolio-badge badge-demo">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+          Industry Demo
+        </div>
+        <h3>Security Operations Platform</h3>
+        <p class="subtitle">Fire &amp; Security Company Management</p>
+        <div class="divider"></div>
+        <div class="case-label">The Problem</div>
+        <p class="case-text">Fire and security companies run on spreadsheets, sticky notes, and phone calls. Service scheduling, compliance tracking, and client management are scattered. I know &mdash; I ran one for 15 years.</p>
+        <div class="case-label">What I Built</div>
+        <p class="case-text">Full operational platform for fire &amp; security contractors &mdash; service delivery, compliance tracking, job scheduling, client portals, and voice-powered intake. Built from direct experience serving Walmart and H-E-B.</p>
+        <div class="case-label">How I Built It</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Full-Stack</span>
+          <span class="tech-tag">CRM</span>
+          <span class="tech-tag">Compliance Engine</span>
+          <span class="tech-tag">Scheduling</span>
+          <span class="tech-tag">Voice Intake</span>
+        </div>
+        <a href="https://securitydemo.chatmaninc.com" target="_blank" rel="noopener noreferrer" class="card-cta">
+          View Demo
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 06 — Houston Texas Pro -->
+      <div class="portfolio-card">
+        <span class="portfolio-card-number">06</span>
+        <div class="portfolio-badge badge-live">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+          Live in Production
+        </div>
+        <h3>Houston Texas Pro</h3>
+        <p class="subtitle">Contractor Marketplace &amp; Lead Engine</p>
+        <div class="divider"></div>
+        <div class="case-label">The Problem</div>
+        <p class="case-text">Homeowners can't find reliable contractors. Contractors can't get consistent leads without paying Angi or HomeAdvisor's inflated fees. Both sides need a local platform built on trust, not ad spend.</p>
+        <div class="case-label">What I Built</div>
+        <p class="case-text">Houston-focused contractor directory and marketplace with intelligent matching, automated lead distribution, service category filtering, and contractor profiles. Designed to scale across categories while keeping lead quality high.</p>
+        <div class="case-label">How I Built It</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Next.js</span>
+          <span class="tech-tag">Directory System</span>
+          <span class="tech-tag">Lead Distribution</span>
+          <span class="tech-tag">Matching Logic</span>
+          <span class="tech-tag">SEO</span>
+        </div>
+        <a href="https://houstontexaspro.com" target="_blank" rel="noopener noreferrer" class="card-cta">
+          Visit Live Site
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==================== EXPERIENCE ==================== -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label fade-in">Experience</div>
+    <h2 class="section-title fade-in">Where I've Been &amp; What I've Done</h2>
+
+    <div class="timeline">
+
+      <!-- Chatman Inc. -->
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot current"></div>
+        <div class="timeline-header">
+          <div class="timeline-title">CEO &amp; Software Architect</div>
+        </div>
+        <div class="timeline-meta">
+          <span class="timeline-company">Chatman Inc.</span>
+          <span class="timeline-location">&middot; Houston, TX (Remote)</span>
+          <span class="timeline-date">Jun 2025 &ndash; Present</span>
+          <span class="current-badge">Current</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Lead design, development, and deployment of intelligent business systems for clients across real estate, construction, healthcare, and technology</li>
+          <li>Architect and code automation-driven workflows and internal tools, shipping production-ready software</li>
+          <li>Advise executives on system architecture, scalable software design, and technology adoption</li>
+        </ul>
+      </div>
+
+      <!-- AIVA Connect -->
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot current"></div>
+        <div class="timeline-header">
+          <div class="timeline-title">Founder &amp; Systems Architect</div>
+        </div>
+        <div class="timeline-meta">
+          <span class="timeline-company">AIVA Connect</span>
+          <span class="timeline-location">&middot; Houston, TX (Remote)</span>
+          <span class="timeline-date">Nov 2025 &ndash; Present</span>
+          <span class="current-badge">Current</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Founded and engineered a voice-powered decision platform from the ground up &mdash; full product lifecycle</li>
+          <li>Built full-stack SaaS: React/Next.js front end, Supabase/PostgreSQL back end, Retell.ai voice engine</li>
+        </ul>
+        <div class="timeline-expandable" id="exp-aiva">
+          <ul class="timeline-bullets">
+            <li>Programmed API integrations, real-time data pipelines, and operational workflows</li>
+            <li>3 U.S. utility provisional patents filed for core architecture innovations</li>
+          </ul>
+        </div>
+        <button class="timeline-toggle" onclick="toggleExpand('exp-aiva', this)">Show more <span>&darr;</span></button>
+      </div>
+
+      <!-- Modern Green -->
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <div class="timeline-title">Founder &mdash; Building Systems &amp; Operations</div>
+        </div>
+        <div class="timeline-meta">
+          <span class="timeline-company">Modern Green Building Solutions</span>
+          <span class="timeline-location">&middot; Houston, TX</span>
+          <span class="timeline-date">Nov 2024 &ndash; Nov 2025</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Owned and operated infrastructure firm delivering networking, automation, and life-safety solutions</li>
+          <li>Led project management, compliance, and vendor coordination in regulated environments</li>
+        </ul>
+      </div>
+
+      <!-- VSC Fire & Security -->
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <div class="timeline-title">Project Manager</div>
+        </div>
+        <div class="timeline-meta">
+          <span class="timeline-company">VSC Fire &amp; Security, Inc.</span>
+          <span class="timeline-location">&middot; Houston, TX</span>
+          <span class="timeline-date">Jun 2023 &ndash; Dec 2024</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Led launch of a new security division &mdash; sales operations, project delivery, compliance, and staffing</li>
+          <li>Managed enterprise accounts across Texas; personally acquired major national clients</li>
+        </ul>
+        <div class="timeline-expandable" id="exp-vsc">
+          <ul class="timeline-bullets">
+            <li>Designed cross-functional processes from demand to installation to billing &mdash; 20&ndash;30 concurrent jobs</li>
+            <li>Quoted and managed skilled trade construction projects across fire protection and security</li>
+          </ul>
+        </div>
+        <button class="timeline-toggle" onclick="toggleExpand('exp-vsc', this)">Show more <span>&darr;</span></button>
+      </div>
+
+      <!-- Chatman Security & Fire -->
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <div class="timeline-title">Founder &amp; Managing Director &mdash; Life Safety &amp; Security</div>
+        </div>
+        <div class="timeline-meta">
+          <span class="timeline-company">Chatman Security &amp; Fire</span>
+          <span class="timeline-location">&middot; Houston, TX</span>
+          <span class="timeline-date">Jun 2009 &ndash; Sep 2024</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Founded and grew company to $1M+ annual revenue &mdash; full-service fire protection and security firm</li>
+          <li>Enterprise clients: Walmart, H-E-B, Dillard's, Stanley Security, Protection One, ADT</li>
+        </ul>
+        <div class="timeline-expandable" id="exp-csf">
+          <ul class="timeline-bullets">
+            <li>Expanded into fire sprinklers, alarms, extinguishers, CCTV, access control, structured cabling, server rooms</li>
+            <li>Built end-to-end operational systems: sales &rarr; estimating &rarr; execution &rarr; service &rarr; compliance</li>
+            <li>Managed vendors, subcontractors, and field operations across multiple service lines</li>
+          </ul>
+        </div>
+        <button class="timeline-toggle" onclick="toggleExpand('exp-csf', this)">Show more <span>&darr;</span></button>
+      </div>
+
+      <!-- Digitech -->
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <div class="timeline-title">Install Manager</div>
+        </div>
+        <div class="timeline-meta">
+          <span class="timeline-company">Digitech</span>
+          <span class="timeline-location">&middot; Alexandria, VA</span>
+          <span class="timeline-date">2007 &ndash; 2008</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Installed access control, cameras, security &amp; fire alarm systems in U.S. government buildings &mdash; Homeland Security, CBP, and Emergency Management</li>
+        </ul>
+      </div>
+
+      <!-- U.S. Army Reserve -->
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <div class="timeline-title">Logistics &amp; Operations Specialist</div>
+        </div>
+        <div class="timeline-meta">
+          <span class="timeline-company">United States Army Reserve</span>
+          <span class="timeline-date">2001 &ndash; 2008</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Mission-critical logistics, equipment readiness, and field operations in high-accountability environments</li>
+          <li>Developed discipline, leadership, and operational reliability under pressure</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==================== EDUCATION ==================== -->
+<section id="education">
+  <div class="container">
+    <div class="section-label fade-in">Education</div>
+    <h2 class="section-title fade-in">Academic Background</h2>
+    <div class="education-card fade-in">
+      <div class="education-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 2 6 2s6-.9 6-2v-5"/></svg>
+      </div>
+      <div>
+        <h3>Bachelor of Business Management</h3>
+        <p>University of Houston</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TECH STACK ==================== -->
+<section id="techstack">
+  <div class="container">
+    <div class="section-label fade-in">Tech Stack</div>
+    <h2 class="section-title fade-in">Tools &amp; Technologies</h2>
+
+    <div class="tech-grid">
+      <div class="tech-card fade-in">
+        <h3>Languages</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS3</span>
+          <span class="skill-tag">SQL</span>
+        </div>
+      </div>
+      <div class="tech-card fade-in fade-in-delay-1">
+        <h3>Front End</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Next.js</span>
+          <span class="skill-tag">Tailwind CSS</span>
+          <span class="skill-tag">Responsive Design</span>
+        </div>
+      </div>
+      <div class="tech-card fade-in fade-in-delay-2">
+        <h3>Back End</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Supabase</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">Serverless</span>
+          <span class="skill-tag">Edge Functions</span>
+        </div>
+      </div>
+      <div class="tech-card fade-in">
+        <h3>Voice &amp; Intelligent Systems</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Retell.ai</span>
+          <span class="skill-tag">LLM Integration</span>
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">Voice Automation</span>
+        </div>
+      </div>
+      <div class="tech-card fade-in fade-in-delay-1">
+        <h3>DevOps &amp; Tools</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Vercel</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">VS Code</span>
+          <span class="skill-tag">CI/CD</span>
+          <span class="skill-tag">Resend</span>
+        </div>
+      </div>
+      <div class="tech-card fade-in fade-in-delay-2">
+        <h3>Platforms</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">SaaS Architecture</span>
+          <span class="skill-tag">Web Apps</span>
+          <span class="skill-tag">Database Design</span>
+          <span class="skill-tag">API Design</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label fade-in">Contact</div>
+    <h2 class="section-title fade-in">Let's Connect</h2>
+
+    <div class="contact-grid">
+      <a href="mailto:howardchatman@icloud.com" class="contact-card fade-in">
+        <div class="contact-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">howardchatman@icloud.com</div>
+        </div>
+      </a>
+
+      <a href="tel:8328597009" class="contact-card fade-in fade-in-delay-1">
+        <div class="contact-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-value">832-859-7009</div>
+        </div>
+      </a>
+
+      <a href="https://linkedin.com/in/howardchatman" target="_blank" rel="noopener noreferrer" class="contact-card fade-in fade-in-delay-2">
+        <div class="contact-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-value">linkedin.com/in/howardchatman</div>
+        </div>
+      </a>
+
+      <a href="https://chatmaninc.com" target="_blank" rel="noopener noreferrer" class="contact-card fade-in fade-in-delay-3">
+        <div class="contact-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Website</div>
+          <div class="contact-value">chatmaninc.com</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="container">
+    &copy; 2026 Howard Leon Chatman III. Houston, TX.
+  </div>
+</footer>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+(function() {
+  'use strict';
+
+  // ===== NAV SCROLL EFFECT =====
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    lastScroll = window.scrollY;
+  }, { passive: true });
+
+  // ===== HAMBURGER MENU =====
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+  });
+
+  document.querySelectorAll('.mobile-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ===== SCROLL ANIMATIONS =====
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // ===== PORTFOLIO CAROUSEL =====
+  var track = document.getElementById('carouselTrack');
+  var cards = track.querySelectorAll('.portfolio-card');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var currentDisplay = document.getElementById('carouselCurrent');
+  var progressFill = document.getElementById('progressFill');
+  var wrapper = document.getElementById('carouselWrapper');
+  var currentIndex = 0;
+  var totalCards = cards.length;
+  var isDragging = false;
+  var startX = 0;
+  var currentTranslate = 0;
+  var prevTranslate = 0;
+  var animationID;
+
+  function getCardWidth() {
+    return cards[0].offsetWidth + parseInt(getComputedStyle(track).gap);
+  }
+
+  function updateCarousel(animate) {
+    if (animate !== false) {
+      track.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+    } else {
+      track.style.transition = 'none';
+    }
+
+    var cardWidth = getCardWidth();
+    currentTranslate = -currentIndex * cardWidth;
+    prevTranslate = currentTranslate;
+    track.style.transform = 'translateX(' + currentTranslate + 'px)';
+
+    cards.forEach(function(card, i) {
+      card.classList.toggle('active', i === currentIndex);
+    });
+
+    currentDisplay.textContent = String(currentIndex + 1).padStart(2, '0');
+    progressFill.style.width = ((currentIndex + 1) / totalCards * 100) + '%';
+
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === totalCards - 1;
+  }
+
+  function goTo(index) {
+    currentIndex = Math.max(0, Math.min(index, totalCards - 1));
+    updateCarousel();
+  }
+
+  prevBtn.addEventListener('click', function() { goTo(currentIndex - 1); });
+  nextBtn.addEventListener('click', function() { goTo(currentIndex + 1); });
+
+  // Keyboard
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') goTo(currentIndex - 1);
+    if (e.key === 'ArrowRight') goTo(currentIndex + 1);
+  });
+
+  // Touch / Drag
+  function getPositionX(e) {
+    return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  }
+
+  function dragStart(e) {
+    isDragging = true;
+    startX = getPositionX(e);
+    track.style.transition = 'none';
+    wrapper.style.cursor = 'grabbing';
+  }
+
+  function dragMove(e) {
+    if (!isDragging) return;
+    var currentX = getPositionX(e);
+    var diff = currentX - startX;
+    currentTranslate = prevTranslate + diff;
+    track.style.transform = 'translateX(' + currentTranslate + 'px)';
+  }
+
+  function dragEnd(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    wrapper.style.cursor = 'grab';
+    var movedBy = currentTranslate - prevTranslate;
+    var threshold = getCardWidth() * 0.2;
+    if (movedBy < -threshold && currentIndex < totalCards - 1) {
+      currentIndex++;
+    } else if (movedBy > threshold && currentIndex > 0) {
+      currentIndex--;
+    }
+    updateCarousel();
+  }
+
+  // Mouse events
+  wrapper.addEventListener('mousedown', dragStart);
+  wrapper.addEventListener('mousemove', dragMove);
+  wrapper.addEventListener('mouseup', dragEnd);
+  wrapper.addEventListener('mouseleave', function() {
+    if (isDragging) dragEnd();
+  });
+
+  // Touch events
+  wrapper.addEventListener('touchstart', dragStart, { passive: true });
+  wrapper.addEventListener('touchmove', dragMove, { passive: true });
+  wrapper.addEventListener('touchend', dragEnd);
+
+  // Prevent drag on links
+  track.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('dragstart', function(e) { e.preventDefault(); });
+    // Prevent click when dragging
+    a.addEventListener('click', function(e) {
+      if (Math.abs(currentTranslate - prevTranslate) > 5) {
+        e.preventDefault();
+      }
+    });
+  });
+
+  // Init carousel
+  updateCarousel(false);
+
+  // Recalculate on resize
+  var resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      updateCarousel(false);
+    }, 100);
+  });
+
+})();
+
+// ===== EXPERIENCE EXPAND/COLLAPSE =====
+function toggleExpand(id, btn) {
+  var el = document.getElementById(id);
+  var isExpanded = el.classList.contains('expanded');
+  el.classList.toggle('expanded');
+  if (isExpanded) {
+    btn.innerHTML = 'Show more <span>&darr;</span>';
+  } else {
+    btn.innerHTML = 'Show less <span>&uarr;</span>';
+  }
+}
+</script>
+
+</body>
+</html>
